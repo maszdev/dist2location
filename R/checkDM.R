@@ -16,7 +16,7 @@
 #' @param m Distance Matrix which is to be validate
 #' @return If all conditions are fulfilled TRUE is returned, else FALSE.
 #' @export
-is_distance_matrix_ok <- function(m,debug = FALSE) {
+is_distance_matrix_ok <- function(m) {
   if(!is_square_matrix(m)) stop("This is not a square matrix")
 
   if(!(sum(is.na(m)) == 0)) return (FALSE)

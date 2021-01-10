@@ -1,0 +1,96 @@
+---
+title: "dist2location"
+description: >
+  A guide for package. Description, basic concepts, workflow and some tricks.
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{dist2location}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+#library(dist2location)
+```
+
+Imagine you have set of points, but you know only distances between them 
+(distances for all their possible pairs). *dist2location* package can be used 
+to find the location of all points. 
+
+Of course there are infinity solutions in cartesian coordinate system 
+(with some big enough k dimension) but it's enough to find one. Rest of them 
+can be found by symmetry transformation, rotation or shifting points by vector. 
+
+# Distance Matrix concept
+One of the basic concept used during working with *dist2location* package is 
+*distance matrix*. For set of n points enumerated by {1,2, ..., n} distance 
+matrix is built as square matrix with n rows and columns. Row (and column) with 
+index i is related with i-th point. Matrix element indexed by (i,j) includes 
+distance between i-th and j-th points. 
+
+Of course distance from i-th to j-th point should be equal to distance from 
+j-th to i-th point (opposite direction) so upper and lower triangle matrices 
+should be symmetrical. Additionally diagonal should include only zeros, because 
+distance between point and itself is 0. There are more limitations related with 
+metrics, see chapter "Validation distance matrix". 
+
+## Example 1
+Let's consider pythagorean triangle with edges lengths 3,4 and 5. 
+
+![](Example1.PNG)
+
+If we enumerate three vertices  A, B, C as 1,2,3 following distance matrix 
+describes distances between them:
+```{r}
+matrix(c(0,3,4,
+        3,0,5,
+        4,5,0),3,3)
+
+```
+
+## Example 2
+Let's consider tetrahedron (triangular pyramid where all edges have the same 
+length). In this example we assume edge length is equal to 7. For such 
+symmetrical case it doesn't matter how do we enumerate vertices, distance 
+matrix is defined for them as: 
+```{r}
+matrix(c(0,7,7,7,
+        7,0,7,7,
+        7,7,0,7,
+        7,7,7,0),4,4)
+```
+# Distance Matrix validation 
+Distance matrix should be a square matrix and no NA nor negative values should 
+be included. Additionally three axioms defined for metric space should be 
+fulfilled (lets denote d(x,y) as distance between points x and y):
+
+1. d(x,y) = 0  <=> x = y
+2. d(x,y) = d(y,x)
+3. d(x,z) <= d(x,y) + d(y,z) , so informally: "direct" distance from x to z is 
+not bigger then distance from x to z via point y.
+
+Function *is_distance_matrix_ok()* can be used for validation:
+```{r}
+library(dist2location)
+m_ok <- matrix(c(0,7,7,7,
+                 7,0,7,7,
+                 7,7,0,7,
+                 7,7,7,0),4,4)
+
+is_distance_matrix_ok(m_ok)
+m_rule2_broken <- matrix(c(0,7,7,7,
+                           2,0,7,7,
+                           7,7,0,7,
+                           7,7,7,0),4,4)
+is_distance_matrix_ok(m_rule2_broken)
+```
+If we want to check what is wrong with second matrix, there is also function 
+for debuging:
+```{r}
+debug_distance_matrix(m_rule2_broken)
+```
+
