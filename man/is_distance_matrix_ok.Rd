@@ -4,7 +4,7 @@
 \alias{is_distance_matrix_ok}
 \title{Check if matrix fulfills distance matrix conditions}
 \usage{
-is_distance_matrix_ok(m, debug = FALSE)
+is_distance_matrix_ok(m)
 }
 \arguments{
 \item{m}{Distance Matrix which is to be validate}
