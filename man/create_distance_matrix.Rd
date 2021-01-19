@@ -6,6 +6,12 @@
 \usage{
 create_distance_matrix(df)
 }
+\arguments{
+\item{df}{data frame including cases (point1,point2,distance)}
+}
+\value{
+distance matrix
+}
 \description{
 This function can create distance matrix from data frame with proper
 structure.
@@ -43,7 +49,7 @@ described) missing cases will be marked in distance matrix as NA.
 create_distance_matrix secures first and second metrics rule (see vignette
 for package) so even if this info is not included in input df output dm
 will include 0 in diagonal.
-When there are many (different) distances for the same points in df, output
-dm will include only last (for both (i,j) and (j,i) cases - second metrics
-rule fulfilled)
+When there are many (different) distances for the same points in data frame,
+output distance matrix will include only last (for both (i,j) and (j,i)
+cases - so second metrics rule is fulfilled).
 }
