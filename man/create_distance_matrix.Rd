@@ -46,7 +46,7 @@ assigned to following points.
 When input data frame is not complete (not all possible distances are
 described) missing cases will be marked in distance matrix as NA.
 
-create_distance_matrix secures first and second metrics rule (see vignette
+create_distance_matrix() secures first and second metrics rule (see vignette
 for package) so even if this info is not included in input df output dm
 will include 0 in diagonal.
 When there are many (different) distances for the same points in data frame,

@@ -136,4 +136,23 @@ for debuging:
 ```{r}
 debug_distance_matrix(m_rule2_broken)
 ```
+# Repair distance matrix
+When distance matrix is wrong, still can be repaired by repair_distance_matrix 
+function. It can make matrix square, remove NA, negative numbers, correct 
+first, second and third metric rules. It tries to change original matrix as 
+lass as possible to fulfill all distance matrix requirements. 
+```{r}
+# repair matrix with value
+# Notify, Upper triangular part overwrites lower triangular part of matrix (rule 2)
+m_rule2_broken
 
+repair_distance_matrix(m_rule2_broken)
+
+# Let's make distance matrix for tetrahedron with edge = 1
+tetrahedron <- matrix(rep(1,16),4,4)
+tetrahedron
+
+tetrahedron <- repair_distance_matrix(tetrahedron)
+tetrahedron
+
+```
