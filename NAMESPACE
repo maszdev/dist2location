@@ -3,5 +3,6 @@
 export(create_distance_matrix)
 export(debug_distance_matrix)
 export(is_distance_matrix_ok)
+export(points_positions)
 export(repair_distance_matrix)
 importFrom(utils,combn)

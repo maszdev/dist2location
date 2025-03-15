@@ -140,7 +140,7 @@ debug_distance_matrix(m_rule2_broken)
 When distance matrix is wrong, still can be repaired by repair_distance_matrix 
 function. It can make matrix square, remove NA, negative numbers, correct 
 first, second and third metric rules. It tries to change original matrix as 
-lass as possible to fulfill all distance matrix requirements. 
+less as possible to fulfill all distance matrix requirements. 
 ```{r}
 # repair matrix with value
 # Notify, Upper triangular part overwrites lower triangular part of matrix (rule 2)
@@ -156,3 +156,38 @@ tetrahedron <- repair_distance_matrix(tetrahedron)
 tetrahedron
 
 ```
+
+# Find point positions 
+Let's define once again distance matrix for tetrahedron with edge length equal to 7.
+In next step find point positions. 
+
+```{r, eval=FALSE}
+dm <- matrix(c(0,7,7,7,
+               7,0,7,7,
+               7,7,0,7,
+               7,7,7,0),4,4)
+
+result <- points_positions(dm)
+
+# Positions as data.frame for 4 points in 3 dimensions
+result$positions
+#             [,1]      [,2]        [,3]
+# [1,]  0.06152344  3.301758  0.32812500
+# [2,]  5.25000000  7.218750 -2.25585938
+# [3,] -0.65625000 10.253906 -0.04101562
+# [4,] -0.67675781  6.398438 -5.88574219
+
+# mean error
+result$error
+# 0.0006492488
+```
+
+One can see `point_postition()` function used for distance matrix with default parameters. 
+
+- stop conditions are: mean error < 0.001 or max number of iteration > 200
+- function for error calculation is mean (other option is max)
+- number of dimension for space where points should be located (by default for n points n-1 dimensions will be used)
+
+See help for function for details. Currently one algorithm is supported, 
+run vignette("dist2location_algorithms") for details.
+

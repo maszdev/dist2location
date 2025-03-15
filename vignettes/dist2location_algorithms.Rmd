@@ -1,0 +1,60 @@
+---
+title: "dist2location algorithms"
+description: >
+  A guide for package. Description, basic concepts, workflow and some tricks.
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{dist2location algorithms}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## General idea
+As an input for algorithm distance matrix is provided (see vignette("dist2location")). 
+As output point locations are expected - data.frame (n rows for n points and m columns for m-dimensions)). 
+
+After every iteration "better" point position is found and current error is calculated.
+Algorithm stops when error is smaller than threshold or number of iterations exceeds limit.
+
+### How error is calculated?
+Distance matrix for all current point position is calculated (let's call it "current DM"). 
+It's compared to distance matrix which is used as an input. For every element (i,j) in both distance matrices 
+(so for element which is related with distance between points with indexes i and j) error is calculated. 
+One can create error matrix for input distance matrix (`input_dm`) and current distance matrix (`current_dm`). 
+
+```text
+error_matrix[i,j] = |input_dm[i,j] - current_dm[i,j]|/input_dm[i,j] # for i<>j
+error_matrix[i,j] = 0 # for i = j
+```
+
+Error is needed to calculate if new distance matrix (for new point positions) is better than previous. 
+One can calculate it by taking average (or max) from elements of `error_matrix` which are not on diagonal 
+(it corresponds to error for distances between points and themselves which is always 0). 
+
+Ideas above are base for all algorithms.
+
+## Algorithm 1
+
+```text
+Set initial step and initial point positions
+Prepare distance matrix for initial position
+set error_threshold and iteration_limit( to keep condition to stop calculations)
+
+i  = 1
+For iteration i:
+  For every point:
+    For every dimension:
+      Move point in one direction through the dimension and calculate new distance matrix. 
+      If error is smaller than for previous distance matrix keep this new position and new 
+      related distance matrix. If error is not minimized, try to move in second direction 
+      and check new distance matrix again.
+      
+  if new error is smaller then threshold or number of iterations exceeds limit:
+    save current points position and STOP calculations
+    
+```
+
+
+
+
+
